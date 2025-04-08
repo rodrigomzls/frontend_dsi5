@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Navbar from "./components/Usuarios/Navbar";
+import Navbar from "./components/shader/Navbar";
+import Footer from "./components/shader/Footer";
 import Home from "./pages/Home";
 import Usuarios from "./pages/Usuario";
 
@@ -14,6 +15,7 @@ const App = () => {
           <Route path="/usuarios" element={<Usuarios />} />
         </Routes>
       </div>
+      <Footer />
     </>
   );
 };

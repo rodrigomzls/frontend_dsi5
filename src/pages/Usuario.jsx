@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
-import { obtenerUsuarios, agregarUsuario, actualizarUsuario, eliminarUsuario } from "../services/usuarioService";
+import {
+  obtenerUsuarios,
+  agregarUsuario,
+  actualizarUsuario,
+  eliminarUsuario,
+} from "../services/usuarioService";
 import UsuarioList from "../components/Usuarios/UsuarioList";
 import UsuarioForm from "../components/Usuarios/UsuarioForm";
 
@@ -44,8 +49,21 @@ const Usuarios = () => {
   return (
     <div>
       <h2>Gestión de Usuarios</h2>
-      <Button className="mb-3" variant="primary" onClick={() => setMostrarModal(true)}>Agregar Usuario</Button>
-      <UsuarioList usuarios={usuarios} seleccionar={seleccionarUsuario} eliminar={eliminar} />
+      <Button
+        className="mb-3"
+        variant="primary"
+        onClick={() => {
+          setUsuarioSeleccionado(null); // <-- Resetea para abrir modal limpio
+          setMostrarModal(true);
+        }}
+      >
+        Agregar Usuario
+      </Button>
+      <UsuarioList
+        usuarios={usuarios}
+        seleccionar={seleccionarUsuario}
+        eliminar={eliminar}
+      />
       <UsuarioForm
         show={mostrarModal}
         handleClose={() => setMostrarModal(false)}
