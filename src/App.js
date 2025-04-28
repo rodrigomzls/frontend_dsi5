@@ -4,6 +4,8 @@ import Home from "./pages/Home";
 import Usuarios from "./pages/Usuarios";
 import Clientes from "./pages/Clientes";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Catalogo from "./pages/Catalogo"; // Asegúrate de importar el componente Register
 import Navbar from "./components/shared/Navbar";
 import Footer from "./components/shared/Footer";
 import { AuthContext } from "./context/AuthContext";
@@ -49,6 +51,14 @@ const App = () => {
           <Route
             path="/login"
             element={!user ? <Login /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/register"
+            element={!user ? <Register /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/catalogo"
+            element={!user ? <Catalogo /> : <Navigate to="/" />}
           />
         </Routes>
       </div>
