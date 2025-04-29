@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { obtenerProductos } from "../services/catalogoService.js";
 import "../css/catalogoStyle.css";
+import { BsCart4 } from "react-icons/bs"; 
 
 const Catalogo = () => {
   const [productos, setProductos] = useState([]);
   const [carrito, setCarrito] = useState([]);
   const [mostrarCarrito, setMostrarCarrito] = useState(false);
+  const carritoRef = useRef(null); 
 
   useEffect(() => {
     const cargar = async () => {
@@ -14,6 +16,25 @@ const Catalogo = () => {
     };
     cargar();
   }, []);
+
+  // Detectar clics fuera del carrito
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (carritoRef.current && !carritoRef.current.contains(event.target)) {
+        setMostrarCarrito(false);
+      }
+    };
+
+    if (mostrarCarrito) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [mostrarCarrito]);
 
   const agregarACarrito = (producto) => {
     if (!producto || isNaN(producto.precio) || producto.precio <= 0) return;
@@ -37,9 +58,48 @@ const Catalogo = () => {
   const total = carrito.reduce((acc, prod) => acc + parseFloat(prod.precio), 0);
 
   return (
-    <div className="container my-5">
-      <h1 className="titulo-catalogo">CATÁLOGO</h1>
+    <div className="container my-5 position-relative">
+      {/* Carrito flotante */}
+      <div style={{ position: "absolute", top: 0, right: 0 }}>
+        <button className="btn btn-outline-dark m-2 d-flex align-items-center" onClick={() => setMostrarCarrito(!mostrarCarrito)}>
+          <BsCart4 size={20} className="me-2" /> {/* Ícono de carrito */}
+          Carrito ({carrito.length})
+        </button>
 
+        {mostrarCarrito && (
+          <div ref={carritoRef} className="carrito-ventana bg-white p-3 border rounded shadow" style={{ width: "300px" }}>
+            <h5>Carrito:</h5>
+            {carrito.length === 0 ? (
+              <p>Tu carrito está vacío</p>
+            ) : (
+              <>
+                {carrito.map((producto, index) => (
+                  <div key={index} className="producto-carrito d-flex justify-content-between align-items-center mb-2">
+                    <span>
+                      <strong>{producto.producto}</strong><br/>
+                      S/. {parseFloat(producto.precio).toFixed(2)}
+                    </span>
+                    <button className="btn btn-sm btn-danger" onClick={() => eliminarDelCarrito(index)}>
+                      X
+                    </button>
+                  </div>
+                ))}
+                <div className="mt-3">
+                  <strong>Total: S/. {total.toFixed(2)}</strong>
+                </div>
+                <button className="btn btn-success btn-block mt-3" onClick={pagar}>
+                  Pagar
+                </button>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Título */}
+      <h1 className="titulo-catalogo text-center mb-4">CATÁLOGO</h1>
+
+      {/* Productos */}
       <div className="row justify-content-center" id="catalogo">
         {productos.map((producto) => (
           <div className="producto col-md-3 m-3 text-center" key={producto.id_producto}>
@@ -56,41 +116,6 @@ const Catalogo = () => {
             </button>
           </div>
         ))}
-      </div>
-
-      <div className="mt-5">
-        <button className="btn btn-outline-dark" onClick={() => setMostrarCarrito(!mostrarCarrito)}>
-          Carrito ({carrito.length})
-        </button>
-
-        {mostrarCarrito && (
-          <div className="carrito-ventana p-3 border rounded mt-3">
-            <h5>Carrito:</h5>
-            {carrito.length === 0 ? (
-              <p>Tu carrito está vacío</p>
-            ) : (
-              <>
-                {carrito.map((producto, index) => (
-                  <div key={index} className="producto-carrito">
-                    <span>
-                      <strong>{producto.producto}</strong> - S/.{" "}
-                      {parseFloat(producto.precio).toFixed(2)}
-                    </span>
-                    <button className="btn-delet" onClick={() => eliminarDelCarrito(index)}>
-                      Eliminar
-                    </button>
-                  </div>
-                ))}
-                <div className="mt-3">
-                  <strong>Total: S/. {total.toFixed(2)}</strong>
-                </div>
-                <button className="btn-pay mt-3" onClick={pagar}>
-                  Pagar
-                </button>
-              </>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );

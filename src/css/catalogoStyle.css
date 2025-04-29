@@ -89,12 +89,13 @@ body {
 }
 
 .producto img {
-    width: 50%; /* Asegura que las imágenes sean responsivas */
-    height: auto; /* Mantener la proporción */
-    margin: 0 auto; /* Centrar la imagen horizontalmente */
-    display: block; /* Necesario para que el margen automático funcione */
-    border-radius: 5px; /* Bordes redondeados para imágenes */
-}
+    width: 100%;           
+    height: 250px;         
+    object-fit: cover;     
+    border-radius: 10px;   
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
 
 .producto:hover {
     transform: scale(1.05);

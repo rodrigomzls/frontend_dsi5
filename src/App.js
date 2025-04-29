@@ -5,7 +5,7 @@ import Usuarios from "./pages/Usuarios";
 import Clientes from "./pages/Clientes";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Catalogo from "./pages/Catalogo"; // Asegúrate de importar el componente Register
+import Catalogo from "./pages/Catalogo";
 import Navbar from "./components/shared/Navbar";
 import Footer from "./components/shared/Footer";
 import { AuthContext } from "./context/AuthContext";
@@ -33,11 +33,12 @@ const App = () => {
 
   return (
     <>
-      {user && <Navbar />}
+      <Navbar />
       <div className="container mt-3">
         <Routes>
+          <Route path="/" element={<Catalogo />} />
           <Route
-            path="/"
+            path="/home"
             element={user ? <Home /> : <Navigate to="/login" />}
           />
           <Route
@@ -50,16 +51,13 @@ const App = () => {
           />
           <Route
             path="/login"
-            element={!user ? <Login /> : <Navigate to="/" />}
+            element={!user ? <Login /> : <Navigate to="/home" />}
           />
           <Route
             path="/register"
-            element={!user ? <Register /> : <Navigate to="/" />}
+            element={!user ? <Register /> : <Navigate to="/home" />}
           />
-          <Route
-            path="/catalogo"
-            element={!user ? <Catalogo /> : <Navigate to="/" />}
-          />
+          <Route path="/catalogo" element={<Catalogo />} />
         </Routes>
       </div>
       <Footer />

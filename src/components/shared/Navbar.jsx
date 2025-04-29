@@ -16,13 +16,23 @@ const Navbar = () => {
   return (
     <BsNavbar bg="dark" variant="dark" expand="lg">
       <Container>
-        <BsNavbar.Brand as={Link} to="/">Mi App</BsNavbar.Brand>
+        <BsNavbar.Brand as={Link} to="/">KYM</BsNavbar.Brand>
         <BsNavbar.Toggle aria-controls="basic-navbar-nav" />
         <BsNavbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link as={Link} to="/">Inicio</Nav.Link>
-            <Nav.Link as={Link} to="/usuarios">Usuarios</Nav.Link>
-            <Nav.Link as={Link} to="/clientes">Clientes</Nav.Link>
+            {user ? (
+              <>
+                <Nav.Link as={Link} to="/home">Inicio</Nav.Link>
+                <Nav.Link as={Link} to="/usuarios">Usuarios</Nav.Link>
+                <Nav.Link as={Link} to="/clientes">Clientes</Nav.Link>
+                <Nav.Link as={Link} to="/catalogo">Catálogo</Nav.Link>
+              </>
+            ) : (
+              <>
+                <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                <Nav.Link as={Link} to="/register">Register</Nav.Link>
+              </>
+            )}
           </Nav>
 
           {user && (

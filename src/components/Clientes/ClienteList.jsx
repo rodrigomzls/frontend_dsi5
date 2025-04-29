@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Table, Button, Pagination } from "react-bootstrap";
-import Swal from "sweetalert2";
 
-const ClienteList = ({ clientes, seleccionar, eliminar }) => {
+const ClienteList = ({ clientes, seleccionar }) => {
   const [paginaActual, setPaginaActual] = useState(1);
   const elementosPorPagina = 5;
 
@@ -10,24 +9,6 @@ const ClienteList = ({ clientes, seleccionar, eliminar }) => {
   const indiceInicio = (paginaActual - 1) * elementosPorPagina;
   const indiceFinal = indiceInicio + elementosPorPagina;
   const clientesPaginados = clientes.slice(indiceInicio, indiceFinal);
-
-  const confirmarEliminacion = (id_cliente) => {
-    Swal.fire({
-      title: "¿Estás seguro?",
-      text: "¡No podrás revertir esto!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Sí, eliminar",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        eliminar(id_cliente);
-        Swal.fire("¡Eliminado!", "El cliente ha sido eliminado.", "success");
-      }
-    });
-  };
 
   const irPrimeraPagina = () => setPaginaActual(1);
   const irUltimaPagina = () => setPaginaActual(totalPaginas);
@@ -82,9 +63,6 @@ const ClienteList = ({ clientes, seleccionar, eliminar }) => {
               <td>
                 <Button variant="warning" onClick={() => seleccionar(c)}>
                   Editar
-                </Button>{" "}
-                <Button variant="danger" onClick={() => confirmarEliminacion(c.id_cliente)}>
-                  Eliminar
                 </Button>
               </td>
             </tr>
