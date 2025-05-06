@@ -47,7 +47,7 @@ const Clientes = () => {
   };
 
   return (
-    <div>
+    <div class="container mt-3 flex-fill">
       <h2>Gestión de Clientes</h2>
       <Button
         className="mb-3"

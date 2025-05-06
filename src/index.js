@@ -4,6 +4,7 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "../src/css/Global.css";  // Asegúrate de importar tu archivo global.css
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

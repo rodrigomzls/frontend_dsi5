@@ -9,6 +9,7 @@ export const obtenerUsuarios = async () => {
 
 export const agregarUsuario = async (usuario) => {
   await fetch(API_URL, {
+    
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(usuario),

@@ -1,61 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
 /* Estilos generales */
 body {
-    font-family: 'Montserrat';
-    background-color: #ffdada;
+    background-color: #ffffff;
 }
 
-.navbar.navbar-light {
-    margin: 0 !important; /* Eliminar márgenes */
-    padding: 0 !important; /* Ajustar padding a cero */
-    background-color: #e93b50 !important; /* Color de fondo */
+.titulo-catalogo {
+    color: #ffffff;
+    font-size: 350%;
 }
 
-/* .navbar-brand{
-    width: 10%;
-} */
-
-.navbar-brand span {
-    font-family: 'Montserrat';
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #f2f2f2;
-    margin: 0; /* Eliminar márgenes */
-    display: inline-block; /* Mantener en línea con la imagen */
-    vertical-align: middle; /* Alinear verticalmente */
-    margin-left: 0px;
-}
-
-.navbar-brand img {
-    height: 50px; /* Ajusta la altura de la imagen */
-    width: auto; /* Mantiene la relación de aspecto */
-    margin-left: 30px; /* Espacio entre la imagen y el título */
-    padding: 7%;
-}
-
-.nav-item-1 a{
-    width: 85px;
-    font-size: 17px; 
-    font-weight: bold; 
-    margin-top: 2px;
-    margin-right: 50px;
-}
-
-.nav-item-2 a{
-    width: 50px;
-    margin-right: 30px;
-}
-
-@media (max-width: 768px) {
-    .navbar-brand img {
-        height: 60px; /* Ajustar a un tamaño más pequeño */
-        margin-left: 10px; /* Reducir espacio en móviles */
-    }
-    .navbar-brand span {
-        font-size: 2rem;
-    }
-}
-
-
+/* ESTILOS PRODUCTOS */
 #catalogo {
     display: flex;
     flex-wrap: wrap;
@@ -63,39 +18,34 @@ body {
 }
 
 .producto {
-    background-color: rgb(100, 41, 41);
-    border: 1px solid #ddd;
+    background-color: rgba(100, 41, 41, 0.8);
     border-radius: 10px;
     margin: 10px;
     padding: 15px;
     text-align: center;
     width: 300px;
-    text-align: center; /* Centra el contenido del producto */
     margin-bottom: 20px; /* Espaciado entre productos */
     transition: transform 0.3s ease;
 }
 
-.producto h2{
-    font-family: 'Montserrat';
+.producto h2 {
     margin-top: 15px;
     font-size: 30px;
     color: #ddd;
 }
 
-.producto p{
-    font-family: 'Montserrat';
+.producto p {
     font-size: 20px;
     color: #ddd;
 }
 
-.producto img {
+.producto img { 
     width: 100%;           
     height: 250px;         
     object-fit: cover;     
     border-radius: 10px;   
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
+}
 
 .producto:hover {
     transform: scale(1.05);
@@ -113,16 +63,15 @@ body {
     }
 }
 
-
 /* Carrito de compras como ventanita */
 .carrito-ventana {
     position: absolute;
-    top: 50px; /* Ajustar según sea necesario */
+    top: 65px; /* Ajustar según sea necesario */
     right: 20px; /* Ajustar la distancia desde la derecha */
     width: 250px;
     padding: 10px;
     border: 1px solid #ddd;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.9);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     font-size: 15px;
@@ -133,7 +82,6 @@ body {
     justify-content: space-between;
     margin-bottom: 10px;
 }
-
 
 #carritoLink img {
     cursor: pointer;
@@ -156,7 +104,6 @@ body {
     font-weight: bold;
 }
 
-
 /* Estilo de Botones */
 .btn-add {
     background-color: #e93b50; /* Color primario */
@@ -165,7 +112,6 @@ body {
     color: white; /* Texto blanco */
     padding: 10px 15px; /* Espaciado */
     transition: background-color 0.3s; /* Transición suave */
-    font-family: 'Montserrat';
     font-size: 20px;
 }
 
@@ -180,8 +126,6 @@ body {
     color: white; /* Texto blanco */
     padding: 10px 15px; /* Espaciado */
     transition: 0.3s; /* Transición suave */
-    margin-left: 70px;
-    font-family: 'Montserrat';
     font-size: 15px;
 }
 
@@ -197,10 +141,30 @@ body {
     color: white; /* Texto blanco */
     font-size: 15px;
     transition: background-color 0.3s; /* Transición suave */
-    font-family: 'Montserrat';
-    font-size: 12px;
 }
 
 .btn-delet:hover {
     background-color: #640000; /* Color al pasar el ratón */
 }
+
+.btn-carrito {
+    background-color: #640000;
+    border: 1px solid #640000; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    height: 50px;
+    width: 130px;      
+    color: rgb(255, 255, 255); /* Texto blanco */
+    font-size: 100%;
+    transition: background-color 0.3s; /* Transición suave */
+}
+
+.btn-carrito:hover {
+    background-color: #ffffff;
+    color: #640000; /* Color al pasar el ratón */
+}
+.catalogo-background {
+    min-height: 100vh;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background: url('https://www.cronoshare.com/blog/wp-content/uploads/2017/06/ser-costurera-a-domicilio.jpg') no-repeat center center/cover;
+  }

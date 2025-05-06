@@ -1,0 +1,55 @@
+/* global.css */
+
+/* Reset general y tipografía */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Fondo general suave */
+.body {
+  background-color: #eff2f6;
+  color: #212529;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Estilo para el contenedor principal de contenido */
+.container.mt-3.flex-fill {
+  margin-top: 10px;     /* Separación respecto al Navbar */
+  margin-bottom: 10px;  /* Separación respecto al Footer */
+  padding: 10px;        /* Espaciado interno para no quedar pegado */
+  flex-grow: 1;         /* Para que ocupe todo el espacio disponible */
+  display: flex;
+  flex-direction: column;
+  align-items: center;  /* Centrado horizontal */
+}
+
+
+/* Estilo de títulos */
+h1, h2, h3 {
+  color: #740000;
+  margin-bottom: 1rem;
+}
+
+/* Links */
+a {
+  color: #740000;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Formularios en general */
+input, select, textarea {
+  border-radius: 10px !important;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  width: 100%;
+  margin-bottom: 1rem;
+}

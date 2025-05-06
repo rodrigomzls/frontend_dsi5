@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Navbar as BsNavbar, Nav, Container, Dropdown } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import "../../css/NavarAndFooter.css";
 
 const Navbar = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -14,7 +15,7 @@ const Navbar = () => {
   };
 
   return (
-    <BsNavbar bg="dark" variant="dark" expand="lg">
+    <BsNavbar bg="dark" variant="dark" expand="lg" fixed="top">
       <Container>
         <BsNavbar.Brand as={Link} to="/">KYM</BsNavbar.Brand>
         <BsNavbar.Toggle aria-controls="basic-navbar-nav" />
@@ -29,8 +30,7 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <Nav.Link as={Link} to="/login">Login</Nav.Link>
-                <Nav.Link as={Link} to="/register">Register</Nav.Link>
+              <Nav.Link as={Link} to="/acceder">Acceder</Nav.Link>
               </>
             )}
           </Nav>

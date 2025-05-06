@@ -47,7 +47,7 @@ const Usuarios = () => {
   };
 
   return (
-    <div>
+    <div class="container mt-3 flex-fill">
       <h2>Gestión de Usuarios</h2>
       <Button
         className="mb-3"
