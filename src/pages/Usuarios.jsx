@@ -48,7 +48,7 @@ const Usuarios = () => {
 
   return (
     <div class="container mt-3 flex-fill">
-      <h2>Gestión de Usuarios</h2>
+      <h2>GESTIÓN DE USUSARIOS</h2>
       <Button
         className="mb-3"
         variant="primary"

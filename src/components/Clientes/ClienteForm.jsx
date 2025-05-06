@@ -75,6 +75,7 @@ const ClienteForm = ({
       <Modal.Body>
         <Form onSubmit={manejarEnvio}>
           <Form.Group className="mb-3">
+            
             <Form.Label>Nombres</Form.Label>
             <Form.Control
               type="text"
@@ -113,7 +114,7 @@ const ClienteForm = ({
             </Form.Control.Feedback>
           </Form.Group>
 
-          <Button variant="primary" type="submit">
+          <Button >
             {clienteSeleccionado ? "Actualizar" : "Agregar"}
           </Button>
         </Form>

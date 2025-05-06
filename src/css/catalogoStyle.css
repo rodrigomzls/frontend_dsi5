@@ -1,42 +1,61 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 
-/* Estilos generales */
-body {
-    background-color: #ffffff;
-}
-
 .titulo-catalogo {
     color: #ffffff;
-    font-size: 350%;
+    font-size: 3.5rem;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9);
+    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+  }
+  
+
+.catalogo-background {
+    min-height: 100vh;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background: url('https://www.cronoshare.com/blog/wp-content/uploads/2017/06/ser-costurera-a-domicilio.jpg') no-repeat center center/cover;
+    background-size: cover;        /* Asegura que cubra todo el fondo */
+    background-position: center;   /* Centra la imagen */
+    background-repeat: no-repeat;  /* Evita que se repita */
+    background-attachment: fixed;  /* Hace que se quede fija al hacer scroll (opcional) */
 }
 
-/* ESTILOS PRODUCTOS */
-#catalogo {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
+  
+/* PRODUCTOS */
 .producto {
-    background-color: rgba(100, 41, 41, 0.8);
+    background-color: rgba(100, 41, 41, 0.8);  
     border-radius: 10px;
     margin: 10px;
     padding: 15px;
     text-align: center;
-    width: 300px;
+    width: 310px;
     margin-bottom: 20px; /* Espaciado entre productos */
     transition: transform 0.3s ease;
 }
 
 .producto h2 {
     margin-top: 15px;
-    font-size: 30px;
-    color: #ddd;
+    font-size: 25px;
+    color: #ffffff;
 }
 
 .producto p {
     font-size: 20px;
     color: #ddd;
+    font-weight: bold;
+}
+
+.producto label{
+    color: #ddd;
+    margin-bottom: 20px;
+    
+}
+
+.producto input{
+    margin-bottom: 20px;
 }
 
 .producto img { 
@@ -52,24 +71,14 @@ body {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-@media (max-width: 768px) {
-    #catalogo {
-        padding: 10px;
-    }
-
-    .producto {
-        width: 100%;
-        margin-bottom: 15px;
-    }
-}
 
 /* Carrito de compras como ventanita */
 .carrito-ventana {
     position: absolute;
     top: 65px; /* Ajustar según sea necesario */
     right: 20px; /* Ajustar la distancia desde la derecha */
-    width: 250px;
     padding: 10px;
+    width: 350px;
     border: 1px solid #ddd;
     background-color: rgba(255, 255, 255, 0.9);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -80,7 +89,7 @@ body {
 .producto-carrito {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
 }
 
 #carritoLink img {
@@ -104,6 +113,7 @@ body {
     font-weight: bold;
 }
 
+
 /* Estilo de Botones */
 .btn-add {
     background-color: #e93b50; /* Color primario */
@@ -120,7 +130,7 @@ body {
 }
 
 .btn-pay {
-    background-color: #f7764e; /* Color primario */
+    background-color: #e93b50; /* Color primario */
     border: none; /* Sin borde */
     border-radius: 5px; /* Bordes redondeados */
     color: white; /* Texto blanco */
@@ -130,21 +140,22 @@ body {
 }
 
 .btn-pay:hover {
-    background-color: #cc532e; /* Color al pasar el ratón */
+    background-color: #b31c2d; /* Color al pasar el ratón */
 }
 
 .btn-delet {
-    background-color: #8a0000; /* Color primario */
+    background-color: #9d0000; /* Color primario */
     border: none; /* Sin borde */
     border-radius: 5px; /* Bordes redondeados */
-    height: 40px;
+    height: 35px;
+    width: 30px;
     color: white; /* Texto blanco */
-    font-size: 15px;
+    font-size: 12px;
     transition: background-color 0.3s; /* Transición suave */
 }
 
 .btn-delet:hover {
-    background-color: #640000; /* Color al pasar el ratón */
+    background-color: #9d0000; /* Color al pasar el ratón */
 }
 
 .btn-carrito {
@@ -162,9 +173,3 @@ body {
     background-color: #ffffff;
     color: #640000; /* Color al pasar el ratón */
 }
-.catalogo-background {
-    min-height: 100vh;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    background: url('https://www.cronoshare.com/blog/wp-content/uploads/2017/06/ser-costurera-a-domicilio.jpg') no-repeat center center/cover;
-  }

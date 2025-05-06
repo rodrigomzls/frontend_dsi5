@@ -1,20 +1,12 @@
 /* global.css */
 
+
 /* Reset general y tipografía */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: 'Montserrat', sans-serif;
-}
-
-/* Fondo general suave */
-.body {
-  background-color: #eff2f6;
-  color: #212529;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
 }
 
 /* Estilo para el contenedor principal de contenido */
@@ -31,8 +23,12 @@
 
 /* Estilo de títulos */
 h1, h2, h3 {
+  margin-top: 30px;
   color: #740000;
   margin-bottom: 1rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 5px rgba(110, 110, 110, 0.6);
+  letter-spacing: 1px;
 }
 
 /* Links */
@@ -45,11 +41,77 @@ a:hover {
   text-decoration: underline;
 }
 
-/* Formularios en general */
-input, select, textarea {
-  border-radius: 10px !important;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  width: 100%;
-  margin-bottom: 1rem;
+
+/* BOTONES */
+.btn {
+  background-color: #e93b50; /* Color primario */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Bordes redondeados */
+  color: white; /* Texto blanco */
+  padding: 10px 15px; /* Espaciado */
+  transition: 0.3s; /* Transición suave */
+  font-size: 15px;
+}
+
+.btn:hover {
+  background-color: #b31c2d; /* Color al pasar el ratón */
+}
+
+
+.btn-edit {
+  background-color: #6c4a4a; /* Color primario */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Bordes redondeados */
+  color: white; /* Texto blanco */
+  padding: 10px 15px; /* Espaciado */
+  transition: 0.3s; /* Transición suave */
+  font-size: 15px;
+}
+
+.btn-edit:hover {
+  background-color: #8a7c7c; /* Color al pasar el ratón */
+}
+
+
+.btn-delete {
+  background-color: #9e0000; /* Color primario */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Bordes redondeados */
+  color: white; /* Texto blanco */
+  padding: 10px 15px; /* Espaciado */
+  transition: 0.3s; /* Transición suave */
+  font-size: 15px;
+}
+
+.btn-delete:hover {
+  background-color: #cc4b4b; /* Color al pasar el ratón */
+}
+
+
+
+/* PAGINACION */
+.Pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.Pagination .page-item .page-link {
+  color: #740000;
+  border: 1px solid #740000;
+  margin: 0 3px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.Pagination .page-item.active .page-link {
+  background-color: #740000;
+  color: white;
+  border-color: #740000;
+}
+
+.Pagination .page-item .page-link:hover {
+  background-color: #5c0000;
+  color: white;
+  border-color: #5c0000;
 }

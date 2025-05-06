@@ -1,8 +1,6 @@
 
 /* Encabezado y pie de página */
 header, footer {
-  background-color: rgba(100, 41, 41, 1.0); /* Fondo oscuro con 80% de transparencia */
-  color: #f1f1f1;          /* Texto claro */
   padding: 1rem 0;
   text-align: center;      /* Centrar el texto */
   margin-top: auto;
@@ -12,51 +10,6 @@ header, footer {
   position: relative;
   bottom: 0;
   width: 100%;            /* Asegurarse de que el footer ocupe todo el ancho */
-}
-
-footer p {
-  margin: 0;
-  letter-spacing: 1px;
-}
-
-footer small {
-  display: block;
-}
-
-/* Estilo del contenido principal */
-main {
-  flex: 1;
-  padding: 1rem;
-}
-
-/* Botones personalizados (general) */
-.btn-custom {
-  background-color: #740000;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  padding: 10px 20px;
-  transition: background-color 0.3s ease;
-}
-
-.btn-custom:hover {
-  background-color: #740000;
-}
-
-/* Estilo de títulos */
-h1, h2, h3 {
-  color: #740000;
-  margin-bottom: 1rem;
-}
-
-/* Links */
-a {
-  color: #740000;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
 }
 
 
@@ -73,7 +26,7 @@ a:hover {
   font-weight: 700;
   font-size: 1.4rem;
   letter-spacing: 1px;
-  color: #f1f1f1 !important;
+  color: #ffffff !important;
 }
 
 .navbar-nav .nav-link {
@@ -87,24 +40,18 @@ a:hover {
 }
 
 .dropdown-toggle {
-  background-color: #444 !important;
+  background-color: #e93b50 !important;
   border: none !important;
   font-weight: 500;
   letter-spacing: 0.5px;
 }
 
-.dropdown-menu {
-  background-color: #740000; /* Fondo oscuro con 90% de transparencia */
-  color: #eee;
-  border: none;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-}
 
 .dropdown-item {
-  color: #ccc;
+  color: #000000;
 }
 
 .dropdown-item:hover {
-  background-color: #333;
-  color: #fff;
+  background-color: #ffd9d9 !important;
+  color: #000000 !important;
 }

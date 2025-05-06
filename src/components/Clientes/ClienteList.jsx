@@ -61,7 +61,7 @@ const ClienteList = ({ clientes, seleccionar }) => {
               <td>{c.apellidos}</td>
               <td>{c.telefono}</td>
               <td>
-                <Button variant="warning" onClick={() => seleccionar(c)}>
+                <Button className="btn-edit" onClick={() => seleccionar(c)}>
                   Editar
                 </Button>
               </td>
@@ -70,7 +70,7 @@ const ClienteList = ({ clientes, seleccionar }) => {
         </tbody>
       </Table>
 
-      <Pagination className="justify-content-center">
+      <Pagination className="Pagination">
         <Pagination.First onClick={irPrimeraPagina} disabled={paginaActual === 1} />
         <Pagination.Prev onClick={irAnterior} disabled={paginaActual === 1} />
         {obtenerItemsPaginacion()}

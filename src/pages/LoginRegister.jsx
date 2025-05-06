@@ -66,7 +66,7 @@ const LoginRegister = () => {
   };
 
   return (
-    <div class="container mt-3 flex-fill">
+    <div className=" body container mt-3 flex-fill">
     <div className={`container-form ${isLoginActive ? "login" : "register"}`}>
       <div className="information">
         <div className="info-childs">

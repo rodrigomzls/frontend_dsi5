@@ -80,10 +80,10 @@ const UsuarioList = ({ usuarios, seleccionar, eliminar }) => {
               <td>{u.user}</td>
               <td>{u.email}</td>
               <td>
-                <Button variant="warning" onClick={() => seleccionar(u)}>
+                <Button className="btn-edit" onClick={() => seleccionar(u)}>
                   Editar
                 </Button>{" "}
-                <Button variant="danger" onClick={() => confirmarEliminacion(u.id_usuario)}>
+                <Button className="btn-delete" onClick={() => confirmarEliminacion(u.id_usuario)}>
                   Eliminar
                 </Button>
               </td>
@@ -92,7 +92,7 @@ const UsuarioList = ({ usuarios, seleccionar, eliminar }) => {
         </tbody>
       </Table>
 
-      <Pagination className="justify-content-center">
+      <Pagination className="Pagination">
         <Pagination.First onClick={irPrimeraPagina} disabled={paginaActual === 1} />
         <Pagination.Prev onClick={irAnterior} disabled={paginaActual === 1} />
         {obtenerItemsPaginacion()}

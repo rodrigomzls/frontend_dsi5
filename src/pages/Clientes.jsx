@@ -9,6 +9,7 @@ import {
 import ClienteList from "../components/Clientes/ClienteList"; 
 import ClienteForm from "../components/Clientes/ClienteForm"; 
 
+
 const Clientes = () => {
   const [clientes, setClientes] = useState([]);
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
@@ -48,10 +49,9 @@ const Clientes = () => {
 
   return (
     <div class="container mt-3 flex-fill">
-      <h2>Gestión de Clientes</h2>
+      <h2>GESTIÓN DE CLIENTES</h2>
       <Button
-        className="mb-3"
-        variant="primary"
+        className="btn mb-3"
         onClick={() => {
           setClienteSeleccionado(null);
           setMostrarModal(true);
@@ -59,6 +59,7 @@ const Clientes = () => {
       >
         Agregar Cliente
       </Button>
+
       <ClienteList
         clientes={clientes}
         seleccionar={seleccionarCliente}

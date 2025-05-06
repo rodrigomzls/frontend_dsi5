@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+
 import Home from "./pages/Home";
 import Usuarios from "./pages/Usuarios";
 import Clientes from "./pages/Clientes";
@@ -7,8 +8,10 @@ import Catalogo from "./pages/Catalogo";
 import Navbar from "./components/shared/Navbar";
 import Footer from "./components/shared/Footer";
 import LoginRegister from "./pages/LoginRegister"; 
+
 import { AuthContext } from "./context/AuthContext";
 import { jwtDecode } from "jwt-decode";
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
@@ -50,7 +53,7 @@ const App = () => {
           />
           <Route
             path="/acceder"
-            element={!user ? <LoginRegister /> : <Navigate to="/home" />}
+            element={!user ? <LoginRegister /> : <Navigate to="/" />}
           />
           <Route path="/catalogo" element={<Catalogo />} />
         </Routes>

@@ -100,8 +100,9 @@ const Catalogo = () => {
 
   return (
     <div className="catalogo-background">
-      <div class="container mt-3 flex-fill">
+      <div className="container mt-3 flex-fill">
       <div className="container my-5 position-relative">
+        
         {/* Carrito flotante */}
         <div style={{ position: "absolute", top: 0, right: 0 }}>
           <br></br>
@@ -111,19 +112,19 @@ const Catalogo = () => {
           </button>
 
           {mostrarCarrito && (
-            <div ref={carritoRef} className="carrito-ventana" style={{ width: "300px" }}>
-              <h5>Carrito:</h5>
+            <div ref={carritoRef} className="carrito-ventana">
               {carrito.length === 0 ? (
                 <p>Tu carrito está vacío</p>
               ) : (
                 <>
                   {carrito.map((item, index) => (
-                    <div key={index} className="producto-carrito d-flex justify-content-between align-items-center mb-2">
+                    <div key={index} className="producto-carrito">
                       <span>
-                        <strong>{item.producto.producto}</strong><br/>
-                        cant: {item.cantidad} | prec x U = {parseInt(item.producto.precio)}
+                        <strong>{item.producto.producto}: S/. {parseFloat(item.producto.precio).toFixed(2)} ({item.cantidad}) </strong><br/>
+                        <strong>S/. {(item.cantidad * parseFloat(item.producto.precio)).toFixed(2)}</strong>
+
                       </span>
-                      <button className="btn btn-sm btn-danger" onClick={() => eliminarDelCarrito(index)}>
+                      <button className="btn-delet" onClick={() => eliminarDelCarrito(index)}>
                         X
                       </button>
                     </div>
@@ -149,7 +150,7 @@ const Catalogo = () => {
           {productos.map((producto) => {
             const maxCantidad = Math.min(10, producto.cantidad);
             return (
-            <div className="producto col-md-3 m-3 text-center" key={producto.id_producto}>
+            <div className="producto col-md-3 m-4 text-center" key={producto.id_producto}>
               <img
                 src={`/Images/ID_Producto=${producto.id_producto}.jpeg`}
                 onError={(e) => (e.target.src = "/Images/default.jpeg")}
@@ -158,7 +159,7 @@ const Catalogo = () => {
               />
               <h2>{producto.producto}</h2>
               <p>S/. {parseFloat(producto.precio).toFixed(2)}</p>
-              <div className="d-flex justify-content-center align-items-center mb-2">
+              <div  className="d-flex justify-content-center align-items-center mb-2">
                 <label htmlFor={`cantidad-${producto.id_producto}`} className="me-2">Cantidad:</label>
                 <input
                   id={`cantidad-${producto.id_producto}`}

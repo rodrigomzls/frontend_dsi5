@@ -11,13 +11,20 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setUser(null);
-    navigate("/login");
+    navigate("/");
   };
 
   return (
-    <BsNavbar bg="dark" variant="dark" expand="lg" fixed="top">
+    <BsNavbar fixed="top">
       <Container>
-        <BsNavbar.Brand as={Link} to="/">KYM</BsNavbar.Brand>
+
+        <BsNavbar.Brand as={Link} to="/">
+        <img
+          src="/Images/logo-kym.png" 
+          height="40"
+        />
+
+        </BsNavbar.Brand>
         <BsNavbar.Toggle aria-controls="basic-navbar-nav" />
         <BsNavbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
@@ -36,19 +43,23 @@ const Navbar = () => {
           </Nav>
 
           {user && (
-            <Dropdown align="end">
-              <Dropdown.Toggle variant="secondary" id="dropdown-user">
+            <Dropdown  align="end">
+
+              <Dropdown.Toggle>
                 {user.name?.toUpperCase()}
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                <Dropdown.Item onClick={() => alert("Sistema creado por Raúl")}>
-                  Acerca de Mi APP
+                <Dropdown.Item onClick={() => alert("Creado por El Mejor Grupo de DSI V 😜")}>
+                  Acerca de
                 </Dropdown.Item>
+
                 <Dropdown.Item onClick={() => alert("Funcionalidad aún no implementada")}>
                   Cambiar contraseña
                 </Dropdown.Item>
+
                 <Dropdown.Divider />
+
                 <Dropdown.Item onClick={handleLogout}>Cerrar sesión</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
