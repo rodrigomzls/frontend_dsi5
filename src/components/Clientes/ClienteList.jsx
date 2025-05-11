@@ -50,6 +50,7 @@ const ClienteList = ({ clientes, seleccionar }) => {
             <th>Nombres</th>
             <th>Apellidos</th>
             <th>Teléfono</th>
+            <th>Dirección</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -60,6 +61,7 @@ const ClienteList = ({ clientes, seleccionar }) => {
               <td>{c.nombres}</td>
               <td>{c.apellidos}</td>
               <td>{c.telefono}</td>
+              <td>{c.direccion}</td>
               <td>
                 <Button className="btn-edit" onClick={() => seleccionar(c)}>
                   Editar

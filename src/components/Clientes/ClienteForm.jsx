@@ -12,6 +12,7 @@ const ClienteForm = ({
   const [nombres, setNombres] = useState("");
   const [apellidos, setApellidos] = useState("");
   const [telefono, setTelefono] = useState("");
+  const [direccion, setDireccion] = useState("");
   const [errores, setErrores] = useState({});
 
   useEffect(() => {
@@ -19,10 +20,12 @@ const ClienteForm = ({
       setNombres(clienteSeleccionado.nombres);
       setApellidos(clienteSeleccionado.apellidos);
       setTelefono(clienteSeleccionado.telefono);
+      setDireccion(clienteSeleccionado.direccion);
     } else {
       setNombres("");
       setApellidos("");
       setTelefono("");
+      setDireccion("");
     }
     setErrores({});
   }, [clienteSeleccionado]);
@@ -34,7 +37,7 @@ const ClienteForm = ({
     if (!telefono.trim() || !/^\d{7,15}$/.test(telefono)) {
       nuevosErrores.telefono = "Teléfono inválido (7 a 15 dígitos)";
     }
-
+     if (!direccion.trim()) nuevosErrores.direccion = "La dirección es obligatoria";
     setErrores(nuevosErrores);
     return Object.keys(nuevosErrores).length === 0;
   };
@@ -50,7 +53,7 @@ const ClienteForm = ({
       return;
     }
 
-    const nuevoCliente = { nombres, apellidos, telefono };
+    const nuevoCliente = { nombres, apellidos, telefono, direccion };
 
     if (clienteSeleccionado) {
       actualizar(clienteSeleccionado.id_cliente, nuevoCliente);
@@ -61,6 +64,7 @@ const ClienteForm = ({
     setNombres("");
     setApellidos("");
     setTelefono("");
+    setDireccion("");
     setErrores({});
     handleClose();
   };
@@ -111,6 +115,19 @@ const ClienteForm = ({
             />
             <Form.Control.Feedback type="invalid">
               {errores.telefono}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Dirección</Form.Label>
+            <Form.Control
+              type="text"
+              value={direccion}
+              onChange={(e) => setDireccion(e.target.value)}
+              isInvalid={!!errores.direccion}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errores.direccion}
             </Form.Control.Feedback>
           </Form.Group>
 

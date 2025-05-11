@@ -1,0 +1,118 @@
+.pagobody {
+  background-color: #f7f7f7;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.checkout-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.checkout-left {
+  flex: 2;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.checkout-right {
+  flex: 1;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  position: sticky;
+  top: 20px;
+  height: fit-content;
+}
+
+.checkout-section {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+.checkout-section h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.checkout-section a {
+  color: #007bff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.item-detalle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.item-detalle img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.resumen-section h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.resumen-linea {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+}
+
+.resumen-linea.total {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.btn-pagar,
+.btn-qr {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-pagar {
+  background-color: #ff3c3c;
+  color: #fff;
+}
+
+.btn-pagar:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.btn-qr {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.qr-section {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.qr-section img {
+  width: 150px;
+  height: 150px;
+}
+
+.fecha-vencimiento {
+  font-size: 12px;
+  margin-top: 10px;
+  color: #555;
+}

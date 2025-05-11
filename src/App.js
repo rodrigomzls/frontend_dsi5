@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Usuarios from "./pages/Usuarios";
 import Clientes from "./pages/Clientes";
 import Catalogo from "./pages/Catalogo";
+import Pago from "./pages/Pago"; // 👈 AÑADIDO
 import Navbar from "./components/shared/Navbar";
 import Footer from "./components/shared/Footer";
 import LoginRegister from "./pages/LoginRegister"; 
@@ -39,23 +40,12 @@ const App = () => {
       <div className="container mt-3 flex-fill">
         <Routes>
           <Route path="/" element={<Catalogo />} />
-          <Route
-            path="/home"
-            element={user ? <Home /> : <Navigate to="/acceder" />}
-          />
-          <Route
-            path="/usuarios"
-            element={user ? <Usuarios /> : <Navigate to="/acceder" />}
-          />
-          <Route
-            path="/clientes"
-            element={user ? <Clientes /> : <Navigate to="/acceder" />}
-          />
-          <Route
-            path="/acceder"
-            element={!user ? <LoginRegister /> : <Navigate to="/" />}
-          />
+          <Route path="/home" element={user ? <Home /> : <Navigate to="/acceder" />} />
+          <Route path="/usuarios" element={user ? <Usuarios /> : <Navigate to="/acceder" />} />
+          <Route path="/clientes" element={user ? <Clientes /> : <Navigate to="/acceder" />} />
+          <Route path="/acceder" element={!user ? <LoginRegister /> : <Navigate to="/" />} />
           <Route path="/catalogo" element={<Catalogo />} />
+          <Route path="/pago" element={<Pago />} /> {/* 👈 AÑADIDO */}
         </Routes>
       </div>
       <Footer />
