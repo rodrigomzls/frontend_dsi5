@@ -1,0 +1,90 @@
+.detalles-container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 15px;
+  font-family: Arial, sans-serif;
+}
+
+.vista-deportiva {
+  display: flex;
+  gap: 20px;
+}
+
+.seccion-izquierda {
+  flex: 2;
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.seccion-derecha {
+  flex: 1;
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.producto-grupos {
+  margin-bottom: 20px;
+}
+
+.grupo-detalle {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(120px,1fr));
+  gap: 10px;
+  align-items: center;
+}
+
+.grupo-detalle label {
+  font-size: 0.9rem;
+}
+
+.btn-agregar,
+.btn-eliminar,
+.btn-continuar {
+  cursor: pointer;
+  background-color: #2a7ae2;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn-agregar:hover,
+.btn-eliminar:hover,
+.btn-continuar:hover {
+  background-color: #1c5bbf;
+}
+
+.preview-logo {
+  max-width: 100%;
+  max-height: 120px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.producto-detalle {
+  margin-bottom: 25px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.producto-detalle label {
+  display: block;
+  margin-top: 8px;
+}
+
+.producto-detalle select,
+.producto-detalle input[type="file"] {
+  margin-top: 4px;
+}

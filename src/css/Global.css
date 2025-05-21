@@ -1,6 +1,5 @@
 /* global.css */
 
-
 /* Reset general y tipografía */
 * {
   margin: 0;
@@ -23,7 +22,7 @@
 
 /* Estilo de títulos */
 h1, h2, h3 {
-  margin-top: 30px;
+  margin-top: 60px;
   color: #740000;
   margin-bottom: 1rem;
   font-weight: bold;
@@ -114,4 +113,29 @@ a:hover {
   background-color: #5c0000;
   color: white;
   border-color: #5c0000;
+}
+
+/* AUTHREQUIRED */
+.auth-required-page {
+  text-align: center;
+  padding: 2rem;
+  margin-top: 2rem;
+}
+.auth-required-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+.btn-login, .btn-register {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+}
+.btn-login {
+  background-color: #007bff;
+  color: white;
+}
+.btn-register {
+  background-color: #28a745;
+  color: white;
 }

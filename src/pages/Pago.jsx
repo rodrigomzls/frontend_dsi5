@@ -1,31 +1,93 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../css/stylePago.css";
+import { useAuth } from "../context/AuthContext";
 
 const Pago = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { productos, total } = location.state || { productos: [], total: 0 };
+  const { user } = useAuth();
+  const { productos, total, cliente, detalles, imagenes } = location.state || {
+    productos: [],
+    total: 0,
+    cliente: {},
+    detalles: {},
+    imagenes: {},
+  };
   const [qrEscaneado, setQrEscaneado] = useState(false);
+  const [procesando, setProcesando] = useState(false);
 
-  if (!productos.length || !total) {
-    return (
-      <div className="pago-container">
-        <h2>No se han recibido datos del carrito.</h2>
-        <button onClick={() => navigate("/")}>Volver al Catálogo</button>
-      </div>
-    );
-  }
+  const procesarPago = async () => {
+    if (!user?.id) {
+      alert("Usuario no autenticado");
+      return;
+    }
 
-  const obtenerFechaVencimiento = () => {
-    const dias = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
-    const hoy = new Date();
-    hoy.setDate(hoy.getDate() + 1);
-    const diaSemana = dias[hoy.getDay()];
-    const dia = hoy.getDate().toString().padStart(2, "0");
-    const mes = (hoy.getMonth() + 1).toString().padStart(2, "0");
-    const año = hoy.getFullYear();
-    return `Paga antes del ${diaSemana} ${dia}/${mes}/${año} - 8:00 PM`;
+    if (!cliente?.direccion || cliente.direccion.trim() === "") {
+      alert("Falta la dirección del cliente");
+      return;
+    }
+
+    if (!Array.isArray(productos) || productos.length === 0) {
+      alert("No hay productos para procesar");
+      return;
+    }
+
+    if (!qrEscaneado) {
+      alert("Debes escanear el código QR antes de pagar");
+      return;
+    }
+
+    if (!cliente?.nombre || cliente.nombre.trim() === "") {
+      alert("Falta el nombre del cliente");
+      return;
+    }
+
+    if (!cliente?.telefono || cliente.telefono.trim() === "") {
+      alert("Falta el número de teléfono del cliente");
+      return;
+    }
+
+    setProcesando(true);
+    try {
+      const response = await fetch("/api/v1/ventas/completa", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          id_usuario: user.id,
+          productos: productos.map((p) => ({
+            id: p.id,
+            cantidad: p.cantidad,
+            precio: p.precio,
+          })),
+          detalles,
+          imagenes,
+          total,
+          direccion: cliente.direccion,
+          cliente: cliente // ← Asegúrate de enviar todo esto también
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.error || "Error en el pago");
+
+      navigate("/confirmacion", {
+        state: {
+          venta: data,
+          cliente,
+          productos,
+          total,
+        },
+      });
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setProcesando(false);
+    }
   };
 
   return (
@@ -35,7 +97,9 @@ const Pago = () => {
         <div className="checkout-left">
           <div className="checkout-section">
             <h3>Dirección de entrega</h3>
-            <p><strong>Juan Carlos Pérez Gómez</strong> +51 987654321</p>
+            <p>
+              <strong>Juan Carlos Pérez Gómez</strong> +51 987654321
+            </p>
             <p>Av. Ejemplo 123, Lima, Perú</p>
             <a href="#">Modificar</a>
           </div>
@@ -56,7 +120,10 @@ const Pago = () => {
             <h3>Detalle del artículo</h3>
             {productos.map((p, idx) => (
               <div key={idx} className="item-detalle">
-                <img src={p.imagen || "/Images/default.png"} alt={p.nombre} />
+                <img
+                  src={p.imagen || "/Images/ID_Producto.jpeg"}
+                  alt={p.nombre}
+                />
                 <div>
                   <p>{p.nombre}</p>
                   <p>PEN {parseFloat(p.precio).toFixed(2)}</p>
@@ -91,12 +158,13 @@ const Pago = () => {
             )}
             <button
               className="btn-pagar"
-              disabled={!qrEscaneado}
-              onClick={() => alert("Gracias por tu pago :)")}
+              disabled={procesando}
+              onClick={procesarPago}
             >
-              Pagar ahora
+              {procesando ? "Procesando..." : "Pagar ahora"}
             </button>
-            <p className="fecha-vencimiento">{obtenerFechaVencimiento()}</p>
+
+            {/* <p className="fecha-vencimiento">{obtenerFechaVencimiento()}</p> */}
           </div>
           <div className="qr-section">
             <img src="/Images/qr.jpeg" alt="QR" />

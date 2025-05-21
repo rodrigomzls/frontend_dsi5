@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
-import "../src/css/Global.css";  // Asegúrate de importar tu archivo global.css
+// import "../src/css/Global.css";  // Asegúrate de importar tu archivo global.css
 import "bootstrap/dist/css/bootstrap.min.css";
 
 

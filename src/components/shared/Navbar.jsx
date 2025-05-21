@@ -22,6 +22,7 @@ const Navbar = () => {
         <img
           src="/Images/logo-kym.png" 
           height="40"
+          alt=""
         />
 
         </BsNavbar.Brand>
