@@ -16,85 +16,91 @@ const Pago = () => {
   const [procesando, setProcesando] = useState(false);
 
   const procesarPago = async () => {
-  if (!user?.id_usuario) {
-    alert("Usuario no autenticado");
-    return;
-  }
-  if (!cliente?.direccion || cliente.direccion.trim() === "") {
-    alert("Falta la dirección del cliente");
-    return;
-  }
-  if (!Array.isArray(productos) || productos.length === 0) {
-    alert("No hay productos para procesar");
-    return;
-  }
-  if (!qrEscaneado) {
-    alert("Debes escanear el código QR antes de pagar");
-    return;
-  }
-  if (!cliente?.nombres || cliente.nombres.trim() === "") {
-    alert("Faltan los nombres del cliente");
-    return;
-  }
-  if (!cliente?.apellidos || cliente.apellidos.trim() === "") {
-    alert("Faltan los apellidos del cliente");
-    return;
-  }
-  if (!cliente?.telefono || cliente.telefono.trim() === "") {
-    alert("Falta el número de teléfono del cliente");
-    return;
-  }
-
-  setProcesando(true);
-  try {
-    const formData = new FormData();
-
-    // El backend obtiene id_cliente del token, pero sí necesitas enviar direccion
-    formData.append("lugar_entrega", cliente.direccion);
-
-    formData.append("total", total);
-
-    const productosConDetalles = productos.map(p => ({
-      id: p.id,
-      cantidad: p.cantidad,
-      precio: p.precio,
-      personalizacion: location.state.detalles[p.id] || {}
-    }));
-    formData.append("productos", JSON.stringify(productosConDetalles));
-
-    productos.forEach((producto) => {
-      const detalles = location.state.detalles[producto.id];
-      if (detalles && detalles.imagenes && detalles.imagenes.length > 0) {
-        detalles.imagenes.forEach((archivo, index) => {
-          formData.append(`archivo-${producto.id}-${index}`, archivo);
-        });
-      }
-    });
-
-    const response = await fetch("http://localhost:3001/api/v1/ventas/completa", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        // No Content-Type cuando usas FormData
-      },
-      body: formData,
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      alert("Error al procesar la venta: " + (errorData.message || "Error desconocido"));
-      setProcesando(false);
+    if (!user?.id_usuario) {
+      alert("Usuario no autenticado");
+      return;
+    }
+    if (!cliente?.direccion || cliente.direccion.trim() === "") {
+      alert("Falta la dirección del cliente");
+      return;
+    }
+    if (!Array.isArray(productos) || productos.length === 0) {
+      alert("No hay productos para procesar");
+      return;
+    }
+    if (!qrEscaneado) {
+      alert("Debes escanear el código QR antes de pagar");
+      return;
+    }
+    if (!cliente?.nombres || cliente.nombres.trim() === "") {
+      alert("Faltan los nombres del cliente");
+      return;
+    }
+    if (!cliente?.apellidos || cliente.apellidos.trim() === "") {
+      alert("Faltan los apellidos del cliente");
+      return;
+    }
+    if (!cliente?.telefono || cliente.telefono.trim() === "") {
+      alert("Falta el número de teléfono del cliente");
       return;
     }
 
-    alert("Venta realizada con éxito");
-    navigate("/gracias");
-  } catch (error) {
-    console.error(error);
-    alert("Error al procesar la venta");
-    setProcesando(false);
-  }
-};
+    setProcesando(true);
+    try {
+      const formData = new FormData();
+
+      // El backend obtiene id_cliente del token, pero sí necesitas enviar direccion
+      formData.append("lugar_entrega", cliente.direccion);
+
+      formData.append("total", total);
+
+      const productosConDetalles = productos.map((p) => ({
+        id: p.id,
+        cantidad: p.cantidad,
+        precio: p.precio,
+        personalizacion: location.state.detalles[p.id] || {},
+      }));
+      formData.append("productos", JSON.stringify(productosConDetalles));
+
+      productos.forEach((producto) => {
+        const detalles = location.state.detalles[producto.id];
+        if (detalles && detalles.imagenes && detalles.imagenes.length > 0) {
+          detalles.imagenes.forEach((archivo, index) => {
+            formData.append(`archivo-${producto.id}-${index}`, archivo);
+          });
+        }
+      });
+
+      const response = await fetch(
+        "http://localhost:3001/api/v1/ventas/completa",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            // No Content-Type cuando usas FormData
+          },
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        alert(
+          "Error al procesar la venta: " +
+            (errorData.message || "Error desconocido")
+        );
+        setProcesando(false);
+        return;
+      }
+
+      alert("Venta realizada con éxito");
+      navigate("/gracias");
+    } catch (error) {
+      console.error(error);
+      alert("Error al procesar la venta");
+      setProcesando(false);
+    }
+  };
 
   return (
     <div className="pagobody">
@@ -103,13 +109,24 @@ const Pago = () => {
         <div className="checkout-left">
           <div className="checkout-section">
             <h3>Datos del Cliente</h3>
-            <p>
-              <strong>Nombres: {cliente?.nombres}</strong> <br />
-              <strong>Apellidos: {cliente?.apellidos}</strong> <br />
-              <strong>Teléfono: {cliente?.telefono}</strong> <br />
-              <strong>Dirección: {cliente?.direccion}</strong>
-            </p>
+            <div className="cliente-dato">
+              <span className="label">Nombres:</span>
+              <span className="valor">{cliente?.nombres}</span>
+            </div>
+            <div className="cliente-dato">
+              <span className="label">Apellidos:</span>
+              <span className="valor">{cliente?.apellidos}</span>
+            </div>
+            <div className="cliente-dato">
+              <span className="label">Teléfono:</span>
+              <span className="valor">{cliente?.telefono}</span>
+            </div>
+            <div className="cliente-dato">
+              <span className="label">Dirección:</span>
+              <span className="valor">{cliente?.direccion}</span>
+            </div>
           </div>
+
           <div className="checkout-section">
             <h3>Método de pago</h3>
             <p>
@@ -120,13 +137,14 @@ const Pago = () => {
                 : "🏦 Transferencia Bancaria"}
             </p>
           </div>
+
           <div className="checkout-section">
             <h3>Detalle del artículo</h3>
             {productos.map((p, idx) => (
-                <div key={p.id_producto} className="item-detalle">
+              <div key={p.id_producto} className="item-detalle">
                 <img
                   src={`/Images/ID_Producto=${p.id_producto}.jpeg`}
-                  alt={p.nombre}
+                  alt=""
                 />
                 <div>
                   <p>{p.nombre}</p>
@@ -137,6 +155,7 @@ const Pago = () => {
             ))}
           </div>
         </div>
+
         {/* Columna Derecha */}
         <div className="checkout-right">
           <div className="resumen-section">
@@ -146,15 +165,18 @@ const Pago = () => {
               <span>PEN {parseFloat(total).toFixed(2)}</span>
             </div>
             <hr />
+
             <div className="resumen-linea total">
               <span>Total</span>
               <span>PEN {parseFloat(total).toFixed(2)}</span>
             </div>
+
             {!qrEscaneado && (
               <button className="btn-qr" onClick={() => setQrEscaneado(true)}>
                 Ya escaneé el QR
               </button>
             )}
+
             <button
               className="btn-pagar"
               disabled={procesando}
@@ -163,8 +185,9 @@ const Pago = () => {
               {procesando ? "Procesando..." : "Pagar ahora"}
             </button>
           </div>
+
           <div className="qr-section">
-            <img src="/Images/qr.jpeg" alt="QR" />
+            <img src="/Images/qrpago.jpg" alt="QR" />
             <p>Escanea con tu billetera favorita</p>
           </div>
         </div>
