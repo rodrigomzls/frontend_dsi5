@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import Swal from "sweetalert2";
+import "../../css/Global.css";
 
 const UsuarioForm = ({
   show,
@@ -29,12 +30,11 @@ const UsuarioForm = ({
 
   const validar = () => {
     const nuevosErrores = {};
-    if (!user.trim()) nuevosErrores.user = "El user es obligatorio";
+    if (!user.trim()) nuevosErrores.user = "Usuario obligatorio";
     if (!email.trim() || !email.includes("@"))
       nuevosErrores.email = "Email inválido";
     if (!usuarioSeleccionado && (!password || password.length < 6)) {
-      nuevosErrores.password =
-        "La contraseña debe tener al menos 6 caracteres";
+      nuevosErrores.password = "La contraseña debe tener al menos 6 caracteres";
     }
 
     setErrores(nuevosErrores);
@@ -44,11 +44,14 @@ const UsuarioForm = ({
   const manejarEnvio = (e) => {
     e.preventDefault();
     if (!validar()) {
-      Swal.fire(
-        "Campos inválidos",
-        "Por favor revisa los datos ingresados",
-        "error"
-      );
+      Swal.fire({
+        icon: "error",
+        title: "Campos inválidos",
+        text: "Por favor revisa los datos ingresados",
+        customClass: {
+          confirmButton: "swal-confirm-btn",
+        },
+      });
       return;
     }
 
@@ -119,7 +122,7 @@ const UsuarioForm = ({
             </Form.Group>
           )}
 
-          <Button variant="primary" type="submit">
+          <Button className="btn-add-primary" type="submit">
             {usuarioSeleccionado ? "Actualizar" : "Agregar"}
           </Button>
         </Form>

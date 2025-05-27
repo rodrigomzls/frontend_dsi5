@@ -2,7 +2,6 @@ import React, { createContext, useState, useEffect, useContext } from "react";
 import { jwtDecode } from "jwt-decode";
 
 export const AuthContext = createContext();
-
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -12,14 +11,20 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       try {
         const decoded = jwtDecode(token);
-        if (decoded.exp * 1000 > Date.now()) {
+        if (decoded.id_usuario) {
           setUser(decoded);
         } else {
+          console.warn("Token no contiene id_usuario:", decoded);
           localStorage.removeItem("token");
+          setUser(null);
         }
-      } catch {
+      } catch (error) {
+        console.error("Error al decodificar el token:", error);
         localStorage.removeItem("token");
+        setUser(null);
       }
+    } else {
+      setUser(null);
     }
     setIsLoading(false);
   }, []);
@@ -31,5 +36,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// 🔽 Este hook soluciona tus errores de importación
 export const useAuth = () => useContext(AuthContext);

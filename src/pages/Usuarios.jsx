@@ -47,18 +47,20 @@ const Usuarios = () => {
   };
 
   return (
-    <div class="container mt-3 flex-fill">
-      <h2>GESTIÓN DE USUSARIOS</h2>
+    <div className="container-admin">
+      <h2 className="admin-title">
+        GESTIÓN DE USUARIOS
+      </h2>
       <Button
-        className="mb-3"
-        variant="primary"
+        className="mb-3 btn-add-primary"
         onClick={() => {
-          setUsuarioSeleccionado(null); // <-- Resetea para abrir modal limpio
+          setUsuarioSeleccionado(null);
           setMostrarModal(true);
         }}
       >
         Agregar Usuario
       </Button>
+      
       <UsuarioList
         usuarios={usuarios}
         seleccionar={seleccionarUsuario}

@@ -48,10 +48,12 @@ const Clientes = () => {
   };
 
   return (
-    <div class="container mt-3 flex-fill">
-      <h2>GESTIÓN DE CLIENTES</h2>
+    <div className="container-admin">
+      <h2 className="admin-title">
+        GESTIÓN DE CLIENTES
+      </h2>
       <Button
-        className="btn mb-3"
+        className="mb-3 btn-add-primary"
         onClick={() => {
           setClienteSeleccionado(null);
           setMostrarModal(true);

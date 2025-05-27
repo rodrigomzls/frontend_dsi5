@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Table, Button, Pagination } from "react-bootstrap";
 import Swal from "sweetalert2";
+import '../../css/Global.css';
 
 const UsuarioList = ({ usuarios, seleccionar, eliminar }) => {
   const [paginaActual, setPaginaActual] = useState(1);
@@ -11,25 +12,41 @@ const UsuarioList = ({ usuarios, seleccionar, eliminar }) => {
   const indiceFinal = indiceInicio + elementosPorPagina;
   const usuariosPaginados = usuarios.slice(indiceInicio, indiceFinal);
 
-  const confirmarEliminacion = (id_usuario
+  const confirmarEliminacion = (id_usuario) => {
+  Swal.fire({
+    title: "¿Estás seguro?",
+    text: "Esta acción no se puede deshacer.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#a00000", // rojo vino
+    cancelButtonColor: "#888", // gris sobrio
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+    customClass: {
+      popup: 'swal-custom-popup',
+      title: 'swal-title',
+      confirmButton: 'swal-confirm-btn',
+      cancelButton: 'swal-cancel-btn'
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      eliminar(id_usuario);
+      Swal.fire({
+        title: "¡Eliminado!",
+        text: "El registro ha sido eliminado.",
+        icon: "success",
+        confirmButtonColor: "#740000",
+        confirmButtonText: "Entendido",
+        customClass: {
+          popup: 'swal-custom-popup',
+          title: 'swal-title',
+          confirmButton: 'swal-confirm-btn'
+        }
+      });
+    }
+  });
+};
 
-  ) => {
-    Swal.fire({
-      title: "¿Estás seguro?",
-      text: "¡No podrás revertir esto!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Sí, eliminar",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        eliminar(id_usuario);
-        Swal.fire("¡Eliminado!", "El registro ha sido eliminado.", "success");
-      }
-    });
-  };
 
   const irPrimeraPagina = () => setPaginaActual(1);
   const irUltimaPagina = () => setPaginaActual(totalPaginas);
@@ -64,7 +81,8 @@ const UsuarioList = ({ usuarios, seleccionar, eliminar }) => {
 
   return (
     <>
-      <Table striped bordered hover>
+      <Table className="admin-table" /* quitamos striped, bordered y hover para que solo use tu estilo */
+      >
         <thead>
           <tr>
             <th>ID</th>

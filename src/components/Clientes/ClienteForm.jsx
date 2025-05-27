@@ -131,7 +131,7 @@ const ClienteForm = ({
             </Form.Control.Feedback>
           </Form.Group>
 
-          <Button >
+          <Button className="btn-add-primary" type="submit">
             {clienteSeleccionado ? "Actualizar" : "Agregar"}
           </Button>
         </Form>

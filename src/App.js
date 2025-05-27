@@ -30,8 +30,8 @@ const AppContent = () => {
       <Navbar />
       <div className="mt-3 flex-fill">
         <Routes>
-          <Route path="/" element={<Catalogo />} />
-          <Route path="/home" element={user ? <Home /> : <Navigate to="/acceder" />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/usuarios" element={user ? <Usuarios /> : <Navigate to="/acceder" />} />
           <Route path="/clientes" element={user ? <Clientes /> : <Navigate to="/acceder" />} />
           <Route path="/acceder" element={!user ? <LoginRegister /> : <Navigate to="/" />} />

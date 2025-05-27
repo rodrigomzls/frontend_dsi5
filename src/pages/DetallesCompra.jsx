@@ -1,188 +1,283 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import '../css/styleComprasD.css';
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import "../css/styleComprasD.css";
 
 const DetallesCompra = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
-  const [grupos, setGrupos] = useState([]);
-  const [imagenes, setImagenes] = useState([]);
-  const [colorSeleccionado, setColorSeleccionado] = useState('#ffffff');
-  const [esDeportiva, setEsDeportiva] = useState(false);
+  const [detallesPorProducto, setDetallesPorProducto] = useState({});
 
   useEffect(() => {
     if (location.state?.productos) {
       const productos = location.state.productos;
       setProductosSeleccionados(productos);
 
-      const soloDeportivos = productos.every(p =>
-        ['polo deportivo', 'short deportivo'].includes(p.nombre.toLowerCase())
-      );
-
-      setEsDeportiva(soloDeportivos);
-
-      if (soloDeportivos) {
-        const total = productos.reduce((sum, p) => sum + p.cantidad, 0);
-        const iniciales = Array.from({ length: total }, (_, i) => ({
-          id: i + 1,
-          cantidad: 1,
-          talla: '',
-          numero: '',
-          nombre: '',
-        }));
-        setGrupos(iniciales);
-      }
+      const detallesIniciales = {};
+      productos.forEach((producto) => {
+        detallesIniciales[producto.id] = {
+          grupos: producto.cantidad > 1 ? [] : null,
+          color: "#ffffff",
+          material: "",
+          talla: "", // para cantidad 1 sin grupos
+          imagenes: [],
+        };
+      });
+      setDetallesPorProducto(detallesIniciales);
     }
   }, [location]);
 
-  const manejarCambioGrupo = (index, campo, valor) => {
-    const nuevosGrupos = [...grupos];
-    nuevosGrupos[index][campo] = valor;
-    setGrupos(nuevosGrupos);
+  const manejarCambioGrupo = (productoId, grupoIndex, campo, valor) => {
+    const nuevosDetalles = { ...detallesPorProducto };
+    nuevosDetalles[productoId].grupos[grupoIndex][campo] = valor;
+    setDetallesPorProducto(nuevosDetalles);
   };
 
-  const manejarCantidadGrupos = (cantidad) => {
-    const totalDisponible = productosSeleccionados.reduce((sum, p) => sum + p.cantidad, 0);
-    if (cantidad < 1 || cantidad > totalDisponible) return;
+  const manejarCambioCampoSimple = (productoId, campo, valor) => {
+    const nuevosDetalles = { ...detallesPorProducto };
+    nuevosDetalles[productoId][campo] = valor;
+    setDetallesPorProducto(nuevosDetalles);
+  };
 
-    const nuevosGrupos = Array.from({ length: cantidad }, (_, i) => ({
-      id: i + 1,
+  const agregarGrupo = (productoId) => {
+    const nuevosDetalles = { ...detallesPorProducto };
+    const totalCantidadActual = obtenerCantidadTotalPorGrupos(
+      nuevosDetalles[productoId].grupos
+    );
+
+    const producto = productosSeleccionados.find((p) => p.id === productoId);
+    if (totalCantidadActual >= producto.cantidad) {
+      alert("Ya se ha asignado la cantidad total para este producto.");
+      return;
+    }
+
+    nuevosDetalles[productoId].grupos.push({
+      talla: "",
       cantidad: 1,
-      talla: '',
-      numero: '',
-      nombre: '',
-    }));
-    setGrupos(nuevosGrupos);
+    });
+    setDetallesPorProducto(nuevosDetalles);
   };
 
-  const manejarImagenes = (event) => {
-    const archivos = Array.from(event.target.files);
-    setImagenes(archivos);
+  const eliminarGrupo = (productoId, grupoIndex) => {
+    const nuevosDetalles = { ...detallesPorProducto };
+    nuevosDetalles[productoId].grupos.splice(grupoIndex, 1);
+    setDetallesPorProducto(nuevosDetalles);
+  };
+
+  const manejarColor = (productoId, color) => {
+    const nuevosDetalles = { ...detallesPorProducto };
+    nuevosDetalles[productoId].color = color;
+    setDetallesPorProducto(nuevosDetalles);
+  };
+
+  const manejarMaterial = (productoId, material) => {
+    const nuevosDetalles = { ...detallesPorProducto };
+    nuevosDetalles[productoId].material = material;
+    setDetallesPorProducto(nuevosDetalles);
+  };
+
+  const manejarImagenes = (productoId, evento) => {
+    const archivos = Array.from(evento.target.files);
+    const nuevosDetalles = { ...detallesPorProducto };
+    nuevosDetalles[productoId].imagenes = archivos;
+    setDetallesPorProducto(nuevosDetalles);
+  };
+
+  const obtenerCantidadTotalPorGrupos = (grupos) => {
+    return grupos.reduce((total, grupo) => total + grupo.cantidad, 0);
   };
 
   const continuar = () => {
+    for (const producto of productosSeleccionados) {
+      const detalles = detallesPorProducto[producto.id];
+      const grupos = detalles.grupos;
+
+      if (producto.cantidad > 1) {
+        const cantidadTotal = obtenerCantidadTotalPorGrupos(grupos);
+        if (cantidadTotal !== producto.cantidad) {
+          alert(
+            `La suma de cantidades para el producto "${producto.nombre}" debe ser exactamente ${producto.cantidad}.`
+          );
+          return;
+        }
+
+        for (const grupo of grupos) {
+          if (!grupo.talla) {
+            alert(
+              `Completa la talla en todos los grupos del producto "${producto.nombre}".`
+            );
+            return;
+          }
+        }
+      } else {
+        // cantidad 1, validar talla simple
+        if (!detalles.talla) {
+          alert(`Completa la talla para el producto "${producto.nombre}".`);
+          return;
+        }
+      }
+
+      // Validar campos específicos para polo personalizado
+      if (producto.nombre.toLowerCase().includes("polo personalizado")) {
+        if (!detalles.color) {
+          alert(`Selecciona un color para el producto "${producto.nombre}".`);
+          return;
+        }
+        if (!detalles.material) {
+          alert(`Selecciona un material para el producto "${producto.nombre}".`);
+          return;
+        }
+      }
+
+      // Validar archivo (al menos 1 archivo)
+      if (!detalles.imagenes || detalles.imagenes.length === 0) {
+        alert(`Sube al menos un archivo para el producto "${producto.nombre}".`);
+        return;
+      }
+    }
+
     const datosFinales = {
       productos: productosSeleccionados,
-      detalles: esDeportiva ? grupos : [],
-      imagenes,
-      colorSeleccionado,
+      detalles: detallesPorProducto,
     };
-    navigate('/pago', { state: datosFinales });
+    navigate("/datos-cliente", { state: datosFinales });
   };
 
   return (
-    <div className="contenedor-compra">
-      <h2>Detalles de la Compra</h2>
+    <div className="detalles-background">
+      <h2 className="titulo-compra">Detalles de la Compra</h2>
 
-      <div className="productos">
-        {productosSeleccionados.map((producto, idx) => (
-          <div key={idx} className="producto">
-            <p><strong>Producto:</strong> {producto.nombre}</p>
-            <p><strong>Cantidad:</strong> {producto.cantidad}</p>
-          </div>
-        ))}
-      </div>
+      {productosSeleccionados.map((producto, index) => {
+        const detalles = detallesPorProducto[producto.id] || {
+          grupos: producto.cantidad > 1 ? [] : null,
+          color: "#ffffff",
+          material: "",
+          talla: "",
+          imagenes: [],
+        };
+        const grupos = detalles.grupos;
 
-      {esDeportiva ? (
-        <div className="secciones-deportivas">
-          <div className="seccion-izquierda">
-            <h3>Configurar Grupos</h3>
-            <label>
-              Cantidad de Grupos:
-              <input
-                type="number"
-                min="1"
-                max={productosSeleccionados.reduce((sum, p) => sum + p.cantidad, 0)}
-                value={grupos.length}
-                onChange={(e) => manejarCantidadGrupos(Number(e.target.value))}
-              />
-            </label>
+        const esPoloPersonalizado = producto.nombre
+          .toLowerCase()
+          .includes("polo personalizado");
 
-            {grupos.map((grupo, index) => (
-              <div key={grupo.id} className="grupo">
-                <p>Grupo #{grupo.id}</p>
-                <input
-                  type="number"
-                  min="1"
-                  max={productosSeleccionados.reduce((sum, p) => sum + p.cantidad, 0)}
-                  value={grupo.cantidad}
-                  onChange={(e) => manejarCambioGrupo(index, 'cantidad', Number(e.target.value))}
-                  placeholder="Cantidad"
-                />
-                <input
-                  type="text"
-                  value={grupo.nombre}
-                  onChange={(e) => manejarCambioGrupo(index, 'nombre', e.target.value)}
-                  placeholder="Nombre"
-                />
-                <input
-                  type="text"
-                  value={grupo.numero}
-                  onChange={(e) => manejarCambioGrupo(index, 'numero', e.target.value)}
-                  placeholder="Número"
-                />
-                <input
-                  type="text"
-                  value={grupo.talla}
-                  onChange={(e) => manejarCambioGrupo(index, 'talla', e.target.value)}
-                  placeholder="Talla"
-                />
+        return (
+          <div key={index} className="producto-detalle">
+            <h3>{producto.nombre}</h3>
+            <p>
+              <strong>Cantidad:</strong> {producto.cantidad}
+            </p>
+
+            {producto.cantidad > 1 ? (
+              <div className="grupos-container">
+                <h4>Grupos</h4>
+                {grupos.map((grupo, idx) => (
+                  <div key={idx} className="grupo-item">
+                    <label>
+                      Talla:
+                      <input
+                        type="text"
+                        value={grupo.talla}
+                        onChange={(e) =>
+                          manejarCambioGrupo(
+                            producto.id,
+                            idx,
+                            "talla",
+                            e.target.value
+                          )
+                        }
+                      />
+                    </label>
+                    <label>
+                      Cantidad:
+                      <input
+                        type="number"
+                        min="1"
+                        max={
+                          producto.cantidad -
+                          obtenerCantidadTotalPorGrupos(grupos) +
+                          grupo.cantidad
+                        }
+                        value={grupo.cantidad}
+                        onChange={(e) =>
+                          manejarCambioGrupo(
+                            producto.id,
+                            idx,
+                            "cantidad",
+                            parseInt(e.target.value) || 1
+                          )
+                        }
+                      />
+                    </label>
+                    <button
+                      className="btn-delet-group"
+                      onClick={() => eliminarGrupo(producto.id, idx)}
+                    >
+                      X
+                    </button>
+                  </div>
+                ))}
+
+                <button
+                  className="btn-add-group"
+                  onClick={() => agregarGrupo(producto.id)}
+                >
+                  Agregar Grupo
+                </button>
               </div>
-            ))}
-          </div>
+            ) : (
+              <label>
+                Talla:
+                <input
+                  type="text"
+                  value={detalles.talla}
+                  onChange={(e) =>
+                    manejarCambioCampoSimple(producto.id, "talla", e.target.value)
+                  }
+                />
+              </label>
+            )}
 
-          <div className="seccion-derecha">
-            <h3>Personalización General</h3>
+            {/* Campos adicionales para polo personalizado */}
+            {esPoloPersonalizado && (
+              <>
+                <label>
+                  Color:
+                  <input
+                    type="color"
+                    value={detalles.color}
+                    onChange={(e) => manejarColor(producto.id, e.target.value)}
+                  />
+                </label>
+                <label>
+                  Material:
+                  <input
+                    type="text"
+                    value={detalles.material}
+                    onChange={(e) => manejarMaterial(producto.id, e.target.value)}
+                    placeholder="Material (ej. algodón)"
+                  />
+                </label>
+              </>
+            )}
+
             <label>
-              Color del Producto:
-              <input
-                type="color"
-                value={colorSeleccionado}
-                onChange={(e) => setColorSeleccionado(e.target.value)}
-              />
-            </label>
-            <label>
-              Subir Logos o Diseños:
+              Archivo{producto.cantidad > 1 ? "s" : ""}:
               <input
                 type="file"
-                multiple
                 accept="image/*"
-                onChange={manejarImagenes}
+                multiple
+                onChange={(e) => manejarImagenes(producto.id, e)}
               />
             </label>
-
-            <button className="boton-continuar" onClick={continuar}>
-              Continuar con el Pago
-            </button>
           </div>
-        </div>
-      ) : (
-        <div className="normal-section">
-          <h3>Personalización Opcional</h3>
-          <label>
-            Color del Producto:
-            <input
-              type="color"
-              value={colorSeleccionado}
-              onChange={(e) => setColorSeleccionado(e.target.value)}
-            />
-          </label>
-          <label>
-            Subir Logos o Diseños:
-            <input
-              type="file"
-              multiple
-              accept="image/*"
-              onChange={manejarImagenes}
-            />
-          </label>
+        );
+      })}
 
-          <button className="boton-continuar" onClick={continuar}>
-            Continuar con el Pago
-          </button>
-        </div>
-      )}
+      <button className="btn-add-group" onClick={continuar}>
+        Continuar con el Pago
+      </button>
     </div>
   );
 };

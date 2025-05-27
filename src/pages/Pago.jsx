@@ -7,88 +7,94 @@ const Pago = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { productos, total, cliente, detalles, imagenes } = location.state || {
+  const { productos, total, cliente } = location.state || {
     productos: [],
     total: 0,
     cliente: {},
-    detalles: {},
-    imagenes: {},
   };
   const [qrEscaneado, setQrEscaneado] = useState(false);
   const [procesando, setProcesando] = useState(false);
 
   const procesarPago = async () => {
-    if (!user?.id) {
-      alert("Usuario no autenticado");
-      return;
-    }
+  if (!user?.id_usuario) {
+    alert("Usuario no autenticado");
+    return;
+  }
+  if (!cliente?.direccion || cliente.direccion.trim() === "") {
+    alert("Falta la dirección del cliente");
+    return;
+  }
+  if (!Array.isArray(productos) || productos.length === 0) {
+    alert("No hay productos para procesar");
+    return;
+  }
+  if (!qrEscaneado) {
+    alert("Debes escanear el código QR antes de pagar");
+    return;
+  }
+  if (!cliente?.nombres || cliente.nombres.trim() === "") {
+    alert("Faltan los nombres del cliente");
+    return;
+  }
+  if (!cliente?.apellidos || cliente.apellidos.trim() === "") {
+    alert("Faltan los apellidos del cliente");
+    return;
+  }
+  if (!cliente?.telefono || cliente.telefono.trim() === "") {
+    alert("Falta el número de teléfono del cliente");
+    return;
+  }
 
-    if (!cliente?.direccion || cliente.direccion.trim() === "") {
-      alert("Falta la dirección del cliente");
-      return;
-    }
+  setProcesando(true);
+  try {
+    const formData = new FormData();
 
-    if (!Array.isArray(productos) || productos.length === 0) {
-      alert("No hay productos para procesar");
-      return;
-    }
+    // El backend obtiene id_cliente del token, pero sí necesitas enviar direccion
+    formData.append("lugar_entrega", cliente.direccion);
 
-    if (!qrEscaneado) {
-      alert("Debes escanear el código QR antes de pagar");
-      return;
-    }
+    formData.append("total", total);
 
-    if (!cliente?.nombre || cliente.nombre.trim() === "") {
-      alert("Falta el nombre del cliente");
-      return;
-    }
+    const productosConDetalles = productos.map(p => ({
+      id: p.id,
+      cantidad: p.cantidad,
+      precio: p.precio,
+      personalizacion: location.state.detalles[p.id] || {}
+    }));
+    formData.append("productos", JSON.stringify(productosConDetalles));
 
-    if (!cliente?.telefono || cliente.telefono.trim() === "") {
-      alert("Falta el número de teléfono del cliente");
-      return;
-    }
+    productos.forEach((producto) => {
+      const detalles = location.state.detalles[producto.id];
+      if (detalles && detalles.imagenes && detalles.imagenes.length > 0) {
+        detalles.imagenes.forEach((archivo, index) => {
+          formData.append(`archivo-${producto.id}-${index}`, archivo);
+        });
+      }
+    });
 
-    setProcesando(true);
-    try {
-      const response = await fetch("/api/v1/ventas/completa", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({
-          id_usuario: user.id,
-          productos: productos.map((p) => ({
-            id: p.id,
-            cantidad: p.cantidad,
-            precio: p.precio,
-          })),
-          detalles,
-          imagenes,
-          total,
-          direccion: cliente.direccion,
-          cliente: cliente // ← Asegúrate de enviar todo esto también
-        }),
-      });
+    const response = await fetch("http://localhost:3001/api/v1/ventas/completa", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        // No Content-Type cuando usas FormData
+      },
+      body: formData,
+    });
 
-      const data = await response.json();
-
-      if (!response.ok) throw new Error(data.error || "Error en el pago");
-
-      navigate("/confirmacion", {
-        state: {
-          venta: data,
-          cliente,
-          productos,
-          total,
-        },
-      });
-    } catch (error) {
-      alert(error.message);
-    } finally {
+    if (!response.ok) {
+      const errorData = await response.json();
+      alert("Error al procesar la venta: " + (errorData.message || "Error desconocido"));
       setProcesando(false);
+      return;
     }
-  };
+
+    alert("Venta realizada con éxito");
+    navigate("/gracias");
+  } catch (error) {
+    console.error(error);
+    alert("Error al procesar la venta");
+    setProcesando(false);
+  }
+};
 
   return (
     <div className="pagobody">
@@ -96,32 +102,30 @@ const Pago = () => {
         {/* Columna Izquierda */}
         <div className="checkout-left">
           <div className="checkout-section">
-            <h3>Dirección de entrega</h3>
+            <h3>Datos del Cliente</h3>
             <p>
-              <strong>Juan Carlos Pérez Gómez</strong> +51 987654321
+              <strong>Nombres: {cliente?.nombres}</strong> <br />
+              <strong>Apellidos: {cliente?.apellidos}</strong> <br />
+              <strong>Teléfono: {cliente?.telefono}</strong> <br />
+              <strong>Dirección: {cliente?.direccion}</strong>
             </p>
-            <p>Av. Ejemplo 123, Lima, Perú</p>
-            <a href="#">Modificar</a>
           </div>
-
           <div className="checkout-section">
             <h3>Método de pago</h3>
-            <p>💳 Visa **** **** 1234</p>
-            <a href="#">Cambiar</a>
+            <p>
+              {cliente?.metodoPago === "yape"
+                ? "📱 Yape/Plin"
+                : cliente?.metodoPago === "tarjeta"
+                ? "💳 Tarjeta de Crédito/Débito"
+                : "🏦 Transferencia Bancaria"}
+            </p>
           </div>
-
-          <div className="checkout-section">
-            <h3>Método de envío</h3>
-            <p>Envío: PEN 7.47</p>
-            <p>Entrega estimada: 23 MAY. - 04 JUN.</p>
-          </div>
-
           <div className="checkout-section">
             <h3>Detalle del artículo</h3>
             {productos.map((p, idx) => (
-              <div key={idx} className="item-detalle">
+                <div key={p.id_producto} className="item-detalle">
                 <img
-                  src={p.imagen || "/Images/ID_Producto.jpeg"}
+                  src={`/Images/ID_Producto=${p.id_producto}.jpeg`}
                   alt={p.nombre}
                 />
                 <div>
@@ -133,18 +137,13 @@ const Pago = () => {
             ))}
           </div>
         </div>
-
         {/* Columna Derecha */}
         <div className="checkout-right">
           <div className="resumen-section">
             <h3>Resumen</h3>
             <div className="resumen-linea">
-              <span>Subtotal</span>
-              <span>PEN {parseFloat(total - 7.47).toFixed(2)}</span>
-            </div>
-            <div className="resumen-linea">
-              <span>Gastos de envío</span>
-              <span>PEN 7.47</span>
+              <span>Total</span>
+              <span>PEN {parseFloat(total).toFixed(2)}</span>
             </div>
             <hr />
             <div className="resumen-linea total">
@@ -163,8 +162,6 @@ const Pago = () => {
             >
               {procesando ? "Procesando..." : "Pagar ahora"}
             </button>
-
-            {/* <p className="fecha-vencimiento">{obtenerFechaVencimiento()}</p> */}
           </div>
           <div className="qr-section">
             <img src="/Images/qr.jpeg" alt="QR" />

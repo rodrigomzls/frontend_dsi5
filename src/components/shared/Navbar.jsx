@@ -18,7 +18,7 @@ const Navbar = () => {
     <BsNavbar fixed="top">
       <Container>
 
-        <BsNavbar.Brand as={Link} to="/">
+        <BsNavbar.Brand as={Link} to="/home">
         <img
           src="/Images/logo-kym.png" 
           height="40"
@@ -31,13 +31,12 @@ const Navbar = () => {
           <Nav className="me-auto">
             {user ? (
               <>
-                <Nav.Link as={Link} to="/home">Inicio</Nav.Link>
                 <Nav.Link as={Link} to="/usuarios">Usuarios</Nav.Link>
                 <Nav.Link as={Link} to="/clientes">Clientes</Nav.Link>
-                <Nav.Link as={Link} to="/catalogo">Catálogo</Nav.Link>
+                
               </>
             ) : (
-              <>
+              <>            
               <Nav.Link as={Link} to="/acceder">Acceder</Nav.Link>
               </>
             )}
@@ -47,7 +46,7 @@ const Navbar = () => {
             <Dropdown  align="end">
 
               <Dropdown.Toggle>
-                {user.name?.toUpperCase()}
+                {user.user?.toUpperCase()}
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
